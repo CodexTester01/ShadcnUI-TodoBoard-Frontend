@@ -18,6 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useIsTouchDevice } from "@/hooks/use-touch-device";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -543,8 +544,9 @@ const SidebarMenuButton = React.forwardRef<
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button";
-    const { isMobile, state } = useSidebar();
+  const Comp = asChild ? Slot : "button";
+  const { isMobile, state } = useSidebar();
+  const isTouch = useIsTouchDevice();
 
     const button = (
       <Comp
@@ -557,7 +559,7 @@ const SidebarMenuButton = React.forwardRef<
       />
     );
 
-    if (!tooltip) {
+    if (!tooltip || isTouch) {
       return button;
     }
 
